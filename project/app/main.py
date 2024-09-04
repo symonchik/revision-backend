@@ -4,7 +4,8 @@ from fastapi import FastAPI, Depends
 from tortoise.contrib.fastapi import register_tortoise
 
 from app.config import get_settings, Settings
-from app.api import ping, summaries
+from app.api import ping, summaries, auth
+# from app.auth.auth import auth_router, register_router
 from contextlib import asynccontextmanager
 
 from app.db import init_db
@@ -28,7 +29,7 @@ def create_application() -> FastAPI:
     )
     application.include_router(ping.router)
     application.include_router(summaries.router, prefix="/summaries", tags=["summaries"])
-
+    application.include_router(auth.router, tags=["users"])
     return application
 
 

@@ -25,7 +25,6 @@ def test_app():
     # tear down
 
 
-# new
 @pytest.fixture(scope="module")
 def test_app_with_db():
     # set up
@@ -34,7 +33,7 @@ def test_app_with_db():
     register_tortoise(
         app,
         db_url=os.environ.get("DATABASE_TEST_URL"),
-        modules={"models": ["app.models.tortoise"]},
+        modules={"models": ["app.models.user", "app.models.tortoise", "aerich.models"]},
         generate_schemas=True,
         add_exception_handlers=True,
     )

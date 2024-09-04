@@ -7,3 +7,7 @@ class SummaryPayloadSchema(BaseModel):
 
 class SummaryResponseSchema(SummaryPayloadSchema):
     id: int
+
+class UserPayloadSchema(BaseModel):
+    email: str
+    password_hash: str
