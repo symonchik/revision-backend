@@ -3,18 +3,9 @@ from tortoise.models import Model
 from tortoise.contrib.pydantic import pydantic_model_creator
 from passlib.hash import bcrypt
 
-# class UserLogin(Model):
-#     """
-#     model for login and registration.
-#     Only 2 fields required 
-#     """
-#     email = fields.CharField(max_length=50, unique=True) # add validators for this field
-#     password_hash =  fields.CharField(max_length=128, null=False)
 
-# UserLogin_Pydantic = pydantic_model_creator(UserLogin, name='User', exclude_readonly=True)
 
 class User(Model):
-    # user_id = fields.IntField(primary_key=True)
     account_type = fields.CharField(max_length=50, default="base user")
     name = fields.CharField(max_length=50, default="air distributor")
     email = fields.CharField(max_length=50, unique=True) # add validators for this field
@@ -22,6 +13,7 @@ class User(Model):
     phone_number = fields.CharField(max_length=13, unique=True, null=True)
     account_status = fields.CharField(max_length=50, default="unsubscribed") # need create class of status
     is_active = fields.BooleanField(default=False)
+
     # created_at = fields.DatetimeField(auto_now_add=True)
     # paymnet_expired_at = fields.DatetimeField()
     # marketplaces = fields.ForeignKeyField('models.ForeginMarketplace', related_name='mps')
@@ -34,7 +26,8 @@ UserIn_Pydantic = pydantic_model_creator(User, name='UserIn', exclude_readonly=T
 
 class UserToken(Model):
     """
-    не надо
+    To create active users (mail verification)
+    do not need for MVP
     """
     token = fields.UUIDField(max_length=36, pk=True)
     user = fields.ForeignKeyField('models.User', related_name='user')

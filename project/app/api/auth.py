@@ -45,7 +45,6 @@ async def activate_user(activation_token):
 async def get_users():
     return await User_Pydantic.from_queryset(User.all())
 
-
 @router.get('/users/me', response_model=User_Pydantic)
 async def get_session_user(user: User_Pydantic = Depends(get_current_user)):
     return user

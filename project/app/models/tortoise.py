@@ -1,10 +1,12 @@
-from tortoise import fields, models
-from fastapi_users import models as users_models
-
+from tortoise import fields
+from tortoise.models import Model
 from tortoise.contrib.pydantic import pydantic_model_creator
+# from fastapi_users import models as users_models
 
 
-class TextSummary(models.Model):
+
+
+class TextSummary(Model):
     url = fields.TextField()
     summary = fields.TextField()
     created_at = fields.DatetimeField(auto_now_add=True)
@@ -14,6 +16,26 @@ class TextSummary(models.Model):
 
 
 SummarySchema = pydantic_model_creator(TextSummary)
+
+
+
+
+# class ForeginMarketplace(Model):
+#     """
+#     Class. all marketplaces that can
+#     be accessed will be in a separate database.
+
+#     marketplace_id - pk
+#     auth_data - data for auth, differs for different marketplaces
+#     """
+#     # marketplace_id = fields.IntField(primary_key=True)
+#     # seller_id = fields.ForeignKeyField('models.Seller', related_name='sellers') # rly need it?
+#     mp_name = fields.TextField()
+#     auth_data = fields.JSONField()
+#     seller_id = fields.ForeignKeyField('app.aux.models.User', related_name='User') # how create connections?
+
+# ForeginMarketplace_Pydantic = pydantic_model_creator(ForeginMarketplace, name='MarketPlace')
+# ForeginMarketplaceIn_Pydantic = pydantic_model_creator(ForeginMarketplace, name='MarketPlaceIn', exclude_readonly=True)
 
 # class ForeginMarketplace(models.Model):
 #     """
