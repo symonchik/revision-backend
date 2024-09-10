@@ -26,3 +26,5 @@ fastapi-users==13.0.0
 passlib==1.7.4
 sendgrid==6.8.1
 requests==2.31.0
+python-dotenv==1.0.1
+python-dateutil==2.8.2

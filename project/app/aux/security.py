@@ -5,6 +5,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
 from tortoise import timezone
+from app.config import SECRET_AUTH
 
 
 async def validate_token(reset_token):
@@ -29,7 +30,7 @@ async def create_verification_token(user):
     
 
 
-SECRET_KEY = "SEcret_dovzar" # need get from env
+SECRET_KEY = SECRET_AUTH # need get from env
 ACCESS_TOKEN_EXPIRE_MINUTES = 20160 #14 Days
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")

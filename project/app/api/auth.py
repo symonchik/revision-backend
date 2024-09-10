@@ -25,11 +25,17 @@ async def create_user(user: UserPayloadSchema):
     """
     or need to create with basic fields
     """
-    user_obj = await User.create(**user.model_dump())
+    try:
+        user_obj = await User.create(**user.model_dump())
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail='User already exist'
+        )
     user_obj.password_hash = bcrypt.hash(user.password_hash)
     await user_obj.save()
     verification_token = await create_verification_token(user_obj)
-    # send_mail(user_obj.email, "Activate Account", f'<strong>{verification_token.token}</strong>')
+    # send_mail(user_obj.email, "Activate Account", f'<strong>{verification_token.token}</strong>') # not for mvp
     return await User_Pydantic.from_tortoise_orm(user_obj)
 
 @router.post('/users/activate')

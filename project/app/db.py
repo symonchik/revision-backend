@@ -1,11 +1,11 @@
-import logging  # new
+import logging
 import os
 
 from fastapi import FastAPI
-from tortoise import Tortoise, run_async  # new
+from tortoise import Tortoise, run_async
 from tortoise.contrib.fastapi import register_tortoise
 
-log = logging.getLogger("uvicorn") # new
+log = logging.getLogger("uvicorn")
 
 
 TORTOISE_ORM = {
