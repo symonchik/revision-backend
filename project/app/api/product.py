@@ -42,7 +42,7 @@ async def update_products_list(
 async def get_all_products(
     current_user: User_Pydantic = Depends(get_current_user)
 ):
-    res = await Product.filter(user_id=current_user.id).all().values('id', 'name', 'user_id')
+    res = await Product.filter(user_id=current_user.id).all().values('id', 'name', 'user_id', 'price', 'discount', 'sku')
     # print(res)
     return res
 
