@@ -1,12 +1,23 @@
 # pull official base image
 FROM python:3.12.1-slim-bookworm
 
-# set working directory
-WORKDIR /usr/src/app
+# create directory for the app user
+RUN mkdir -p /home/app
+
+# create the app user
+RUN addgroup --system app && adduser --system --group app
+
+# create the appropriate directories
+ENV HOME=/home/app
+ENV APP_HOME=/home/app/web
+RUN mkdir $APP_HOME
+WORKDIR $APP_HOME
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV ENVIRONMENT prod
+ENV TESTING 0
 
 # install system dependencies
 RUN apt-get update \
@@ -16,16 +27,17 @@ RUN apt-get update \
 # install python dependencies
 RUN pip install --upgrade pip
 COPY ./requirements.txt .
-COPY ./requirements-dev.txt .
-RUN pip install -r requirements-dev.txt
-RUN pip install lxml[html_clean]
+RUN pip install -r requirements.txt
+RUN pip install "uvicorn[standard]==0.26.0"
 
 # add app
 COPY . .
 
-# add entrypoint.sh
-COPY ./entrypoint.sh .
-RUN chmod +x /usr/src/app/entrypoint.sh
+# chown all the files to the app user
+RUN chown -R app:app $APP_HOME
 
-# run entrypoint.sh
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+# change to the app user
+USER app
+
+# run gunicorn
+CMD gunicorn --bind 0.0.0.0:$PORT app.main:app -k uvicorn.workers.UvicornWorker
